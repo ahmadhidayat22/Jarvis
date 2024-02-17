@@ -1,7 +1,7 @@
 # About
   python speech recognition with Gemini AI
   
-# installation
+# Installation
 
 ### For windows users
   for the program to listen to our voice/speech ```pip install speechRecognition```
@@ -12,8 +12,8 @@
   
   and exciting thins, Gemini AI  ```pip install -q -U google-generativeai```
 
-# usage
-  make sure all library are, then change the api key in ```.env``` with your api key that you have registered, if not you can create an api key first in https://makersuite.google.com.
+# Usage
+  make sure all library are, then change the token ```BARD_API``` in ```.env``` with your api key that you have registered, if not you can create an api key first in https://makersuite.google.com.
   then run a program  ```python main.py```
   
   
