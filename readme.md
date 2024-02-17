@@ -14,7 +14,7 @@
 
 # Usage
   make sure all library are, then change the token ```BARD_API``` in ```.env``` with your api key that you have registered, if not you can create an api key first in https://makersuite.google.com.
-  then run a program 
+  then run the program 
   
   
 ## Requirement
