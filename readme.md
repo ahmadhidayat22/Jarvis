@@ -1,5 +1,5 @@
 # About
-  python speech recognition with bard ai
+  python speech recognition with Gemini AI
   
 # installation
 
