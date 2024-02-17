@@ -4,7 +4,7 @@
 # Installation
 
 ### For windows users
-  for the program to listen to our voice/speech ```pip install speechRecognition```
+  for the program to listen to our voice/speech `pip install speechRecognition`, for more details https://pypi.org/project/SpeechRecognition/
   
   you maybe need a pyaudio, so ```pip install pyAudio```
   
