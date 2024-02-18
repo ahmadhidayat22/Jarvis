@@ -13,6 +13,8 @@
   to play a sound when listening , ```pip install pydub```  and you may need a ffmpeg, i use this https://www.gyan.dev/ffmpeg/builds/packages/ffmpeg-6.1.1-full_build.7z
   
   and exciting thing, Gemini AI  ```pip install -q -U google-generativeai```
+> [!NOTE]
+> kamu bisa install package dengan menjalankan installpip.py
 
 
 # Usage
