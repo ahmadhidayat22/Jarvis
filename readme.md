@@ -9,8 +9,11 @@
   you maybe need a pyaudio, so ```pip install pyAudio```
   
   to speak up, or text to speech ```pip install pyttsx3```
+
+  to play a sound when listening , ```pip install pydub```  and you may need a ffmpeg, i use this https://www.gyan.dev/ffmpeg/builds/packages/ffmpeg-6.1.1-full_build.7z
   
-  and exciting thins, Gemini AI  ```pip install -q -U google-generativeai```
+  and exciting thing, Gemini AI  ```pip install -q -U google-generativeai```
+
 
 # Usage
   make sure all library are, then change the token ```BARD_API``` in ```.env``` with your api key that you have registered, if not you can create an api key first in https://makersuite.google.com.
