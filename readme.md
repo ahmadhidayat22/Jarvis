@@ -14,7 +14,7 @@
   
   and exciting thing, Gemini AI  ```pip install -q -U google-generativeai```
 > [!NOTE]
-> kamu bisa install package dengan menjalankan [installpip.py](https://github.com/ahmadhidayat22/Jarvis/blob/main/installpip.py)
+> kamu bisa install package secara langsung dengan menjalankan [installpip.py](https://github.com/ahmadhidayat22/Jarvis/blob/main/installpip.py)
 
 
 # Usage
