@@ -13,7 +13,7 @@ from gtts import gTTS
 
 
 greenAPI = API.GreenAPI(
-    "7103906718", "9af7993a489c4a279b9f20e1346265978085ea983f83420a82"
+    "tokenGreenApi", "instanceGreenApi"
 )
 
 engine2 = pyttsx3.init("sapi5")
