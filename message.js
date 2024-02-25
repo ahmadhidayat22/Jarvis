@@ -35,7 +35,15 @@ module.exports = message = async (client, m, chatUpdate) => {
 		let text = (q = args.join(" "));
 		const arg = budy.trim().substring(budy.indexOf(" ") + 1);
 		// const arg1 = arg.trim().substring(arg.indexOf(" ") + 1);
+		const command = body
+		.replace(prefix, "")
+		const ranges = [
+			'\u00a9|\u00ae|\p{Zs}|[\u2001-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]',
+			
+		].join('|');
 
+		const commandTxt = command.replace(new RegExp(ranges, 'gi'), '');
+		
 		const from = m.chat;
 		const reply = m.reply;
 		// const sender = m.sender;
@@ -52,26 +60,33 @@ module.exports = message = async (client, m, chatUpdate) => {
 		const groupName = m.isGroup ? groupMetadata.subject : "";
 		const axios = require('axios');
 
+		const pushnameRegx = pushname.replace(new RegExp(ranges, 'gi'), '');
+		const groupNameRegx = groupName.replace(new RegExp(ranges, 'gi'), '');
+
 		// Push Message To Console
 		let argsLog =  budy;
 		// console.log(groupMetadata)
+		// console.log(commandTxt)
+		// console.log(command)
 		if (!m.isGroup) {
             const fs = require("fs");
 
-			if(argsLog){
-
+			if(commandTxt){
+				
 			fs.readFile("text.json", (err, datas) => {
 				if (err) {
 					console.error(err);
 				} else {
 				const jsonData = JSON.parse(datas);
 				let request = {
-					from: pushname,
-					text : argsLog,
+					from: pushnameRegx,
+					text : commandTxt,
 					number: m.sender.replace("@s.whatsapp.net", ""),
 					groupName: ''
 	
 				}
+				msg = "dari " + pushnameRegx + ' pesan : ' + commandTxt
+				console.log(msg);
 				// Tambahkan data baru ke jsonData
 				jsonData.push(request);
 			
@@ -86,9 +101,6 @@ module.exports = message = async (client, m, chatUpdate) => {
 				}
 			});
 		}
-
-  
-
 			// await client.sendMessage(botNumber, { text: kirim });
 		} else if (m.isGroup) {
             const fs = require("fs");
@@ -101,7 +113,7 @@ module.exports = message = async (client, m, chatUpdate) => {
 				}
 			}
 
-			if(blacklist && argsLog){
+			if(blacklist && commandTxt){
 
 			fs.readFile("text.json", (err, datas) => {
 				if (err) {
@@ -109,15 +121,15 @@ module.exports = message = async (client, m, chatUpdate) => {
 				} else {
 				const jsonData = JSON.parse(datas);
 				let request = {
-					from: pushname,
-					text : argsLog,
+					from: pushnameRegx,
+					text : commandTxt,
 					number: m.sender.replace("@s.whatsapp.net", ""),
-					groupName: groupName
+					groupName: groupNameRegx
 	
 				}
 				// Tambahkan data baru ke jsonData
 				jsonData.push(request);
-				msg = "dari " + pushname +' di ' + groupName + ' pesan : ' + argsLog
+				msg = "dari " + pushnameRegx +' di ' + groupNameRegx + ' pesan : ' + commandTxt
 				console.log(msg);
 			
 				// Tulis kembali jsonData ke file JSON
@@ -139,19 +151,19 @@ module.exports = message = async (client, m, chatUpdate) => {
 		}
 
 
-	// async function send_to_py(args){
-	// 	const {spawn} = require("child_process")
-	// 	const pythonProcess = spawn('python3', ['-c', `import main; main.notify(${args});`]); 
-	// 	pythonProcess.stdout.on('data', (data) => { 
-	// 		console.log(`stdout: ${data}`); 
-	// 	}); 
+	async function send_to_py(args){
+		const {spawn} = require("child_process")
+		const pythonProcess = spawn('python3', ['-c', `import main; main.notify(${args});`]); 
+		pythonProcess.stdout.on('data', (data) => { 
+			console.log(`stdout: ${data}`); 
+		}); 
 		
-	// 	pythonProcess.stderr.on('data', (data) => { 
-	// 		console.log(`stderr: ${data}`); 
-	// 	});
+		pythonProcess.stderr.on('data', (data) => { 
+			console.log(`stderr: ${data}`); 
+		});
 		
 
-	// }
+	}
 
 	} catch (err) {
 		console.log(util.format(err));

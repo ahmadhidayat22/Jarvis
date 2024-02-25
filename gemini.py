@@ -14,9 +14,8 @@ API_KEY= os.getenv('BARD_API')
 
 genai.configure(api_key=API_KEY)
 
-model = genai.GenerativeModel('gemini-pro')
+# model = genai.GenerativeModel('gemini-pro')
 
-chat = model.start_chat(history=[])
 generation_config = {
   "temperature": 1,
   "top_p": 1,
@@ -47,6 +46,8 @@ model = genai.GenerativeModel(model_name="gemini-1.0-pro",
                               generation_config=generation_config,
                               safety_settings=safety_settings)
 
+chat = model.start_chat(history=[])
+
 # chat = model.start_chat(history=[
 #   {
 #     "role": "user",
@@ -65,8 +66,8 @@ engine = pyttsx3.init("sapi5")
 rate = engine.getProperty('rate')
 voices = engine.getProperty('voices')
 volume = engine.getProperty('volume')
-engine.setProperty('rate', rate+50)
-engine.setProperty('volume', 200)
+engine.setProperty('rate', rate+30)
+engine.setProperty('volume', 150)
 
 # set voice speech. voices[0] => male, english ; voices[1]=> male ,indo ; voices[2]=> female, english;
 engine.setProperty('voice', voices[1].id)
@@ -111,23 +112,30 @@ def take_command():
 
 def main(text):
     while True:
-      talk('oke, apakah ada pertanyaan? (ya atau tidak)')
+      talk('hai tuan apakah ingin bertanya ? ')
 
       text = take_command()
       # text = "apa itu python"
       
-      if "None" in text :
+      if not "None" in text:
+
         if 'ya' in text or "iya" in text :
-          text = text.replace("ya", "")
-          text = text.replace("iya", "")
+          talk('ingin bertanya apa')
+          text = take_command()
           
-          response = chat.send_message(text, stream=True)
-          for chunk in response:
-              result = chunk.text
-              # print(result)
-              talk(result)
-      elif 'tidak' in text or 'nggak' in text or 'sudah' in text  :
-           break
+          if not "None" in text:
+            text = text.replace("ya", "")
+            text = text.replace("iya", "")
+            
+            response = chat.send_message(text, stream=True)
+            for chunk in response:
+                result = chunk.text
+                # print(result)
+                talk(result)
+        elif 'tidak' in text or 'nggak' in text or 'sudah' in text  :
+          talk('oke terimakasih telah bertanya ')
+           
+          break
     return
 
 

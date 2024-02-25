@@ -6,6 +6,8 @@ def install(package):
 
 
 
+# install("whatsapp-api-client-python")
+
 # install("googletrans")
 # install("pywhatkit")
 # install("speechRecognition")
@@ -14,17 +16,8 @@ def install(package):
 # install("pydub")
 # install("gTTS")
 # install("playsound==1.2.2")
-    
-install("whatsapp-api-client-python")
-
-install("googletrans")
-install("pywhatkit")
-install("speechRecognition")
-install("pyAudio")
-install("google-generativeai")
-install("pydub")
-install("gTTS")
-install("playsound==1.2.2")
+# install("pyautogui")
+install("pyscreeze")
 
     
     

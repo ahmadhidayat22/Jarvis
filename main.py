@@ -4,16 +4,10 @@ import os
 from pydub import AudioSegment
 from pydub.playback import play
 from dotenv import load_dotenv , find_dotenv
-import datetime
-import asyncio
 from whatsapp_api_client_python import API
 import threading
 import playsound
 from gtts import gTTS
-
-import time
-from json import dumps
-import time
 from datetime import datetime
 import requests
 
@@ -86,7 +80,7 @@ def take_command():
 
 def call(text):
 
-   action_call = "jarvis"
+   action_call = "cuy"
    text = text.lower()
    if action_call in text:
       play(song)
@@ -94,115 +88,111 @@ def call(text):
    return False
 
 def app():
+    import time
     
     while True:
-      # try:
-        text = take_command()
-        # text = "wake up"
-        print(text)
-        speak = ""
-
-        if "wake up" in text:
-          from greetMe import greetMe
-          greetMe()
-          
-          while True:
+        # try:
             text = take_command()
-            # text = "whatsapp"
-            if  'jam berapa sekarang' in text or 'sekarang jam berapa' in text or 'jam' in text :
-              time = datetime.datetime.now().strftime('%I:%M %p')
-              talk("sekarang jam"+ time)
+            # text = "wake up"
+            print(text)
+            speak = ""
 
-    
-              
-            elif "google" in text:
-                from SearchNow import searchGoogle
-                searchGoogle(text)
-            elif "youtube" in text or "yt" in text or "musik" in text:
-                from SearchNow import searchYoutube
-                searchYoutube(text)
-            # elif "wikipedia" in text:
-            #     from SearchNow import searchWikipedia
-            #     searchWikipedia(text)
-
-            elif "suhu" in text or "cuaca" in text :
-                from weather import main
-                main(text)
-
-            elif "ingat ini" in text:
-                rememberMessage = text.replace("ingat ini","")
-                # rememberMessage = text.replace("jarvis","")
-                print(rememberMessage)
-                talk("saya akan mengingat"+rememberMessage)
-                remember = open("Remember.txt","a")
-                remember.write(rememberMessage)
-                remember.close()
-
-            elif  "ingat apa" in text or "kamu ingat apa" in text :
-                remember = open("Remember.txt","r")
-
-                speak("hal yang saya ingat adalah" + remember.read())
-
-            elif "whatsapp" in text:
-                # thread_b.start()
-                
-                pass
-
-                talk("hal yang saya ingat adalah" + remember.read())
-
-            elif "lupakan" in text :
-                talk("oke saya akan melupakan hal tersebut")
-                os.remove("Remember.txt")
-
-            elif "whatsapp" in text:
-                thread_b = threading.Thread(target=webhook)
-                thread_b.start()
-
-                # pass
-
-
-            elif "stop" in text:
-                talk('oke bos, panggil saya jika anda membutuhkan')
-                break
-
-            elif "off" in text:
-                talk('panggil saya lain kali sir')
-                
-                exit()
-
-          
-
-            elif "nanya" in text or "bertanya" in text or "tanya" in text :
-              from gemini import main
-              main(text)
-
-
-
-            # time.sleep(1)
+            if call(text):
+                from greetMe import greetMe
+                greetMe()
             
+                while True:
+                    text = take_command()
+                    # text = ""
+                    if  'jam berapa sekarang' in text or 'sekarang jam berapa' in text or 'jam' in text :
+                        time = datetime.datetime.now().strftime('%I:%M %p')
+                        talk("sekarang jam"+ time)
+
                 
-            # from case import state
-            # speak = speak + state(text)
+                    
+                    elif "google" in text:
+                        from SearchNow import searchGoogle
+                        searchGoogle(text)
+                    elif "youtube" in text or "yt" in text or "musik" in text:
+                        from SearchNow import searchYoutube
+                        searchYoutube(text)
+                    # elif "wikipedia" in text:
+                    #     from SearchNow import searchWikipedia
+                    #     searchWikipedia(text)
 
-            # if speak == "False":
-            #   talk('okay sir')
-            #   exit()
+                    elif "suhu" in text or "cuaca" in text :
+                        from weather import main
+                        main(text)
 
-            # talk(speak)
+                    elif "ingat ini" in text:
+                        rememberMessage = text.replace("ingat ini","")
+                        # rememberMessage = text.replace("jarvis","")
+                        print(rememberMessage)
+                        talk("saya akan mengingat"+rememberMessage)
+                        remember = open("Remember.txt","a")
+                        remember.write(rememberMessage)
+                        remember.close()
+
+                    elif  "ingat apa" in text or "kamu ingat apa" in text :
+                        remember = open("Remember.txt","r")
+
+                        speak("hal yang saya ingat adalah" + remember.read())
+
+                    elif "whatsapp" in text:
+                        # thread_b.start()
+                        
+                        pass
+
+                        # talk("hal yang saya ingat adalah" + remember.read())
+
+                    elif "lupakan" in text :
+                        talk("oke saya akan melupakan hal tersebut")
+                        os.remove("Remember.txt")
+
+                    # elif "whatsapp" in text:
+                    #     thread_b = threading.Thread(target=webhook)
+                    #     thread_b.start()
+
+                    #     # pass
+
+
+                    elif "off" in text:
+                        talk('oke bos, panggil saya jika anda membutuhkan')
+                        break
+
+                    elif "stop" in text:
+                        talk('panggil saya lain kali sir')
+                        
+                        exit()
+
+                
+
+                    elif "nanya" in text or "bertanya" in text or "tanya" in text :
+                        from gemini import main
+                        main(text)
+
+                    # elif "screenshot" in text:
+                    #     import pyautogui #pip install pyautogui
+                    #     import datetime
+
+                    #     time = datetime.datetime.now().strftime('%I:%M %p')
+
+                    #     filename = "ss-"+time+'.jpg'
+                    #     print(time)
+                    #     im = pyautogui.screenshot()
+                    #     im.save("ss.jpg")
+
+                    # time.sleep(1)
+
+                
+            time.sleep(1)
+
+        # except Exception as e:
+        #     print(e)
+            
+             
         
-        
-        # time.sleep(1)
 
-      # except:
-      #    talk('i dont understand')
-      #    pass
-        
-
-
-from json import dumps
-import time
-import json
-from queue import Queue
 
 
 def webhook():
@@ -359,6 +349,12 @@ def status_instance_changed(body: dict) -> None:
 
 
 # thread_a.start()
+from json import dumps
+import time
+import json
+from queue import Queue
+
+
 
 def read_json():
 
@@ -383,7 +379,7 @@ def read_json():
                         json.dumps(data, sort_keys=True, indent=4, separators=(',', ': '))
                     )
                 
-                print(q)
+                # print(q)
               
                 # # q.pop(j)
                 
