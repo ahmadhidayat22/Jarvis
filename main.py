@@ -10,10 +10,22 @@ from whatsapp_api_client_python import API
 import threading
 import playsound
 from gtts import gTTS
+
 import time
+from json import dumps
+import time
+from datetime import datetime
+import requests
+
+load_dotenv(find_dotenv())
+
+
+idInstance = os.getenv('idInstance')
+ApiTokenInstance = os.getenv('ApiTokenInstance')
+
 
 greenAPI = API.GreenAPI(
-    "7103906718", "9af7993a489c4a279b9f20e1346265978085ea983f83420a82"
+    idInstance, ApiTokenInstance
 )
 
 engine2 = pyttsx3.init("sapi5")
@@ -39,6 +51,7 @@ def notify(text):
 
 def talk(text):
    print(text)
+
    engine2.say(text)
    engine2.runAndWait()
 
@@ -118,20 +131,35 @@ def app():
 
             elif "ingat ini" in text:
                 rememberMessage = text.replace("ingat ini","")
-                rememberMessage = text.replace("jarvis","")
-                speak("saya akan mengingat"+rememberMessage)
+                # rememberMessage = text.replace("jarvis","")
+                print(rememberMessage)
+                talk("saya akan mengingat"+rememberMessage)
                 remember = open("Remember.txt","a")
                 remember.write(rememberMessage)
                 remember.close()
 
-            elif "kamu ingat" in text or "ingat apa" in text:
+            elif  "ingat apa" in text or "kamu ingat apa" in text :
                 remember = open("Remember.txt","r")
+
                 speak("hal yang saya ingat adalah" + remember.read())
 
             elif "whatsapp" in text:
                 # thread_b.start()
                 
                 pass
+
+                talk("hal yang saya ingat adalah" + remember.read())
+
+            elif "lupakan" in text :
+                talk("oke saya akan melupakan hal tersebut")
+                os.remove("Remember.txt")
+
+            elif "whatsapp" in text:
+                thread_b = threading.Thread(target=webhook)
+                thread_b.start()
+
+                # pass
+
 
             elif "stop" in text:
                 talk('oke bos, panggil saya jika anda membutuhkan')
@@ -170,10 +198,12 @@ def app():
       #    pass
         
 
+
 from json import dumps
 import time
 import json
 from queue import Queue
+
 
 def webhook():
     # while True:
@@ -184,35 +214,149 @@ def webhook():
           time.sleep(1)
         except Exception as e:
             print(e)
+
             # pass
 def handler(type_webhook: str, body: dict) -> None:
     if type_webhook == "incomingMessageReceived":
         incoming_message_received(body)
+    elif type_webhook == "outgoingMessageReceived":
+        outgoing_message_received(body)
+    elif type_webhook == "outgoingAPIMessageReceived":
+        outgoing_api_message_received(body)
+    elif type_webhook == "outgoingMessageStatus":
+        outgoing_message_status(body)
+    elif type_webhook == "stateInstanceChanged":
+        state_instance_changed(body)
+    elif type_webhook == "deviceInfo":
+        device_info(body)
+    elif type_webhook == "incomingCall":
+        incoming_call(body)
+    elif type_webhook == "statusInstanceChanged":
+        status_instance_changed(body)
+def get_notification_time(timestamp: int) -> str:
+    return str(datetime.fromtimestamp(timestamp))
+
+
 def incoming_message_received(body: dict) -> None:
     # from main import talk
     timestamp = body["timestamp"]
+    data = dumps(body, ensure_ascii=False, indent=4)
 
     senderName = body["senderData"]["senderName"] 
     senderNumber = body["senderData"]["sender"]
     text= ""
     groupName = ""
-    if(body["messageData"]["typeMessage"] == "extendedTextMessage"):
+    typeMessage = body["messageData"]["typeMessage"] 
+    blockGroup = ["BOT LAMIN" ,  "Loker TGR-SMD & OLL SHOP", "INFO LOKER KALTIM PERGUDANGAN/DISTRIBUTOR🔥🔥🔥"]
+    if(typeMessage == "extendedTextMessage"):
         #pc
-        groupName = groupName + " di " + body["senderData"]["chatName"]
 
         text = text + body["messageData"]["extendedTextMessageData"]["text"]
-    elif(body["messageData"]["typeMessage"] == "textMessage"):
+    elif(typeMessage == "textMessage"):
         # gc
         text = text + body["messageData"]["textMessageData"]["textMessage"]
+        groupName = groupName + " di " + body["senderData"]["chatName"]
+        
+    elif(typeMessage == "quotedMessage"):
+        # gc
+        if (body["messageData"]["textMessageData"]["quotedMessage"]["typeMessage"] == "textMessage"):
+
+            text = text + body["messageData"]["textMessageData"]["quotedMessage"]["textMessage"]
+            groupName = groupName + " di " + body["senderData"]["chatName"]
         
     # print(grouptext)
-    notify('pesan baru dari '+ senderName + ', '+ text + groupName)
+    if groupName in blockGroup :    
+        # print(body)
+        notify('pesan dari '+ senderName + ', '+ text + groupName)
 
     # print(f'new message from {senderName} number {senderNumber},  ')
     # print(f"New incoming message at {time} with data: {data}", end="\n\n")
-    
+# def delete_notif_message(id: int):
+#     url = "https://api.greenapi.com/waInstance7103906718/deleteNotification/9af7993a489c4a279b9f20e1346265978085ea983f83420a82/43"
+#     payload = {}
+#     headers= {
+#         "Content-Type":"application/json"
+#     }
+
+#     response = requests.request("DELETE", url, headers=headers, data = payload)
+
+#     print(response.text.encode('utf8'))
+
+def outgoing_message_received(body: dict) -> None:
+    timestamp = body["timestamp"]
+    time = get_notification_time(timestamp)
+
+    data = dumps(body, ensure_ascii=False, indent=4)
+
+    print(f"New outgoing message at {time} with data: {data}", end="\n\n")
+
+
+def outgoing_api_message_received(body: dict) -> None:
+    timestamp = body["timestamp"]
+    time = get_notification_time(timestamp)
+
+    data = dumps(body, ensure_ascii=False, indent=4)
+
+    print("New outgoing API message at" + time + " with data: "+ data)
+    # notify("New outgoing API message at" + time + " with data: "+ data)
+
+
+def outgoing_message_status(body: dict) -> None:
+    timestamp = body["timestamp"]
+    time = get_notification_time(timestamp)
+
+    data = dumps(body, ensure_ascii=False, indent=4)
+
+    response = (
+        f"Status of sent message has been updated at {time} with data: {data}"
+    )
+    print("Status of sent message has been updated at " + time + " with data: "+ data)
+    # notify("Status of sent message has been updated at " + time + " with data: "+ data)
+
+
+def state_instance_changed(body: dict) -> None:
+    timestamp = body["timestamp"]
+    time = get_notification_time(timestamp)
+
+    data = dumps(body, ensure_ascii=False, indent=4)
+    print("Current instance state at  " + time + " with data: "+ data)
+    # notify("Current instance state at  " + time + " with data: "+ data)
+
+
+def device_info(body: dict) -> None:
+    timestamp = body["timestamp"]
+    time = get_notification_time(timestamp)
+
+    data = dumps(body, ensure_ascii=False, indent=4)
+
+ 
+    print("informasi perangkat sekarang  " + time + " with data: "+ data)
+    # notify("informasi perangkat sekarang  " + time + " with data: "+ data)
+
+
+def incoming_call(body: dict) -> None:
+    timestamp = body["timestamp"]
+    time = get_notification_time(timestamp)
+    senderName = body["senderData"]["senderName"] 
+
+    data = dumps(body, ensure_ascii=False, indent=4)
+
+    # notify("Ada telepon masuk dari" + senderName)
+    print(data)
+
+
+def status_instance_changed(body: dict) -> None:
+    timestamp = body["timestamp"]
+    time = get_notification_time(timestamp)
+
+    data = dumps(body, ensure_ascii=False, indent=4)
+
+    print(f"status instansi sekarang {time} dengan data: {data}", end="\n\n")
+
 # thread_a = threading.Thread(target=app)
+
 # thread_b = threading.Thread(target=webhook)
+
 
 # thread_a.start()
 

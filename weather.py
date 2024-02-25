@@ -59,6 +59,9 @@ def main(text):
     
     try:
         key = WEATHER_KEY
+        if key == "YOUR_OPENWEATHER_API":
+            talk("token kamu belum di atur")
+            return
         url_weather = "https://api.openweathermap.org/data/2.5/weather?"
         ind = text.split().index("di")
         
