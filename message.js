@@ -53,12 +53,12 @@ module.exports = message = async (client, m, chatUpdate) => {
 		const axios = require('axios');
 
 		// Push Message To Console
-		let argsLog = budy.length > 30 ? `${q.substring(0, 30)}...` : budy;
+		let argsLog =  budy;
 		// console.log(groupMetadata)
 		if (!m.isGroup) {
             const fs = require("fs");
 
-			
+			if(argsLog){
 
 			fs.readFile("text.json", (err, datas) => {
 				if (err) {
@@ -85,20 +85,23 @@ module.exports = message = async (client, m, chatUpdate) => {
 				});
 				}
 			});
+		}
+
   
 
 			// await client.sendMessage(botNumber, { text: kirim });
 		} else if (m.isGroup) {
             const fs = require("fs");
-			let blacklistGC = ['BOT LAMIN', 'Loker TGR-SMD & OLL SHOP', 'Pp']
+			let blacklistGC = ['BOT LAMIN', 'Loker TGR-SMD & OLL SHOP', 'Pp' , 'INFO LOKER KALTIM/ PERGUDANGAN/DISTRIBUTOR 🔥🔥🔥']
 			let blacklist = true
             for(let i = 0; i < blacklistGC.length; i++){
-				if (groupName != blacklistGC[i]){
+				if (groupName == blacklistGC[i]){
 					// console.log('gak sama');
 					blacklist = false
 				}
 			}
-			if(blacklist){
+
+			if(blacklist && argsLog){
 
 			fs.readFile("text.json", (err, datas) => {
 				if (err) {
@@ -114,6 +117,8 @@ module.exports = message = async (client, m, chatUpdate) => {
 				}
 				// Tambahkan data baru ke jsonData
 				jsonData.push(request);
+				msg = "dari " + pushname +' di ' + groupName + ' pesan : ' + argsLog
+				console.log(msg);
 			
 				// Tulis kembali jsonData ke file JSON
 				fs.writeFile("text.json", JSON.stringify(jsonData,null,2) , (err) => {
@@ -125,45 +130,28 @@ module.exports = message = async (client, m, chatUpdate) => {
 				});
 				}
 			});
-			msg = "dari " + pushname +' di ' + groupName + ' pesan : ' + argsLog
-			await send_to_py(msg)
+			// await send_to_py(msg)
 
 		}
-
-			// console.log(
-			// 	chalk.black(chalk.bgWhite("[ LOGS ]")),
-			// 	color(argsLog, "turquoise"),
-			// 	chalk.magenta("From"),
-			// 	chalk.green(pushname),
-			// 	chalk.yellow(`[ ${m.sender.replace("@s.whatsapp.net", "")} ]`),
-			// 	chalk.blueBright("IN"),
-			// 	chalk.green(groupName)
-			// );
 			// let kirim = `[ LOGS ] ${argsLog} From ${pushname} IN ${groupName}`;
-            
-            
-            console.log(argsLog + ' from ' + pushname  + ' in ' + groupName);
-            
- 
-			
   
 			// await client.sendMessage(botNumber, { text: kirim });
 		}
 
 
-	async function send_to_py(args){
-		const {spawn} = require("child_process")
-		const pythonProcess = spawn('python3', ['-c', `import main; main.notify(${args});`]); 
-		pythonProcess.stdout.on('data', (data) => { 
-			console.log(`stdout: ${data}`); 
-		}); 
+	// async function send_to_py(args){
+	// 	const {spawn} = require("child_process")
+	// 	const pythonProcess = spawn('python3', ['-c', `import main; main.notify(${args});`]); 
+	// 	pythonProcess.stdout.on('data', (data) => { 
+	// 		console.log(`stdout: ${data}`); 
+	// 	}); 
 		
-		pythonProcess.stderr.on('data', (data) => { 
-			console.log(`stderr: ${data}`); 
-		});
+	// 	pythonProcess.stderr.on('data', (data) => { 
+	// 		console.log(`stderr: ${data}`); 
+	// 	});
 		
 
-	}
+	// }
 
 	} catch (err) {
 		console.log(util.format(err));

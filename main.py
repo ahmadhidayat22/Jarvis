@@ -366,32 +366,41 @@ def read_json():
         try:
             f = open('text.json')
             data = json.load(f)
-            
+            q = []
+
             if data:
-               
+                for i in range(len(data)):
 
-                data.pop(0)
-                open("text.json", "w").write(
-                    json.dumps(data, sort_keys=True, indent=4, separators=(',', ': '))
-                )
+                   
+                    q.append(data[i])
+                    
+                    # print(f'{text} from {sender_name} in {groupName} ')
+
+                for i in range(len(data)):
+
+                    data.pop(0)
+                    open("text.json", "w").write(
+                        json.dumps(data, sort_keys=True, indent=4, separators=(',', ': '))
+                    )
+                
+                print(q)
+              
+                # # q.pop(j)
+                
+                for i in range(len(q)):
+                    sender_name = q[i]['from']
+                    text= q[i]['text']
+                    phoneNumber= q[i]['number']
+                    groupName = q[i]['groupName']
+                    msg = ''
+                    if(groupName == ''):
+                        msg='dari ' + sender_name + ', pesan: '+ text 
+                    else:
+                        msg= 'dari ' + sender_name + ' di ' + groupName +', pesan: '+ text
+                    notify(msg)
+                
+                
                 time.sleep(1)
-
-                # for i in range(len(data)):
-                #     sender_name = data[0]['from']
-                #     text= data[0]['text']
-                #     phoneNumber= data[0]['number']
-                #     groupName = data[0]['groupName']
-                #     # print(f'{text} from {sender_name} in {groupName} ')
-                #     # # q.pop(j)
-                    
-
-                #     msg = ''
-                #     if(groupName == ''):
-                #         msg='dari ' + sender_name + ', pesan: '+ text 
-                #     else:
-                #         msg= 'dari ' + sender_name + ' di ' + groupName +', pesan: '+ text
-                #     notify(msg)
-                    
                 #     # q.append(data[i])
                 
                 #     # print(data[i]['from'])

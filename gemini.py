@@ -47,16 +47,19 @@ model = genai.GenerativeModel(model_name="gemini-1.0-pro",
                               generation_config=generation_config,
                               safety_settings=safety_settings)
 
-chat = model.start_chat(history=[
-  {
-    "role": "user",
-    "parts": ["kamu adalah Leo, asisten ai yang ramah dan sangat menyenangkan."]
-  },
-  {
-    "role": "model",
-    "parts": ["Halo! Saya Leo, asisten AI yang ramah dan menyenangkan. Saya di sini untuk membantu Anda dengan apa pun yang Anda perlukan. Saya dapat membantu Anda dengan tugas, menjawab pertanyaan, atau sekadar mengobrol. Saya selalu ingin tahu dan belajar, jadi jangan ragu untuk mengajukan pertanyaan apa pun kepada saya. Saya akan melakukan yang terbaik untuk membantu!"]
-  },
-])
+# chat = model.start_chat(history=[
+#   {
+#     "role": "user",
+#     "parts": ["kamu adalah Leo, asisten ai yang ramah dan sangat menyenangkan."]
+#   },
+#   {
+#     "role": "model",
+#     "parts": ["Halo! Saya Leo, asisten AI yang ramah dan menyenangkan. Saya di sini untuk membantu Anda dengan apa pun yang Anda perlukan. Saya dapat membantu Anda dengan tugas, menjawab pertanyaan, atau sekadar mengobrol. Saya selalu ingin tahu dan belajar, jadi jangan ragu untuk mengajukan pertanyaan apa pun kepada saya. Saya akan melakukan yang terbaik untuk membantu!"]
+#   },
+# ])
+
+chat = model.start_chat(history=[])
+
 
 engine = pyttsx3.init("sapi5")
 rate = engine.getProperty('rate')
@@ -95,7 +98,8 @@ def take_command():
             print(f"You : {text}")
            
          except sr.RequestError as er:
-             print('=> Request error from google spech recognition '+er)
+            print('=> Request error from google spech recognition '+er)
+            return "None"
 
          except Exception as e:
                   print("say that again")
