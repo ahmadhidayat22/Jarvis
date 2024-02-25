@@ -1,0 +1,29 @@
+{
+  "name": "jarvis",
+  "version": "1.0.0",
+  "description": "python speech recognition with Gemini AI",
+  "main": "index.js",
+  "scripts": {
+    "test": "start"
+  },
+  "author": "amway",
+  "license": "ISC",
+  "dependencies": {
+    "@adiwajshing/keyed-db": "^0.2.4",
+    "@hapi/boom": "^10.0.0",
+    "@whiskeysockets/baileys": "^6.5.0",
+    "awesome-phonenumber": "^2.64.0",
+    "axios": "^1.3.4",
+    "chalk": "^4.1.2",
+    "figlet": "^1.5.2",
+    "fluent-ffmpeg": "^2.1.2",
+    "fs": "0.0.1-security",
+    "lodash": "^4.17.21",
+    "node-webpmux": "^3.1.9",
+    "os": "^0.1.2",
+    "pino": "^7.0.5",
+    "qrcode-terminal": "^0.12.0",
+    "util": "^0.12.4"
+    
+  }
+}
