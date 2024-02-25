@@ -13,5 +13,6 @@ def install(package):
 # install("pydub")
 # install("gTTS")
 # install("playsound==1.2.2")
+install("whatsapp-api-client-python")
     
     
