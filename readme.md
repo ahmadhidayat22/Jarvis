@@ -1,5 +1,5 @@
 # About
-  python speech recognition with Gemini AI
+  Python speech recognition with Gemini AI
   
 # Installation
 
